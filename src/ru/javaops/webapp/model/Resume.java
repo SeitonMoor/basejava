@@ -1,9 +1,6 @@
 package ru.javaops.webapp.model;
 
-/**
- * Initial resume class
- */
-public class Resume {
+public final class Resume {
 
     // Unique identifier
     private String uuid;

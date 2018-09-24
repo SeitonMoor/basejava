@@ -3,9 +3,6 @@ package ru.javaops.webapp;
 import ru.javaops.webapp.model.Resume;
 import ru.javaops.webapp.storage.ArrayStorage;
 
-/**
- * Test for your ru.javaops.webapp.storage.ArrayStorage implementation
- */
 public class MainTestArrayStorage {
     private static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 

@@ -7,10 +7,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-/**
- * Interactive test for ru.javaops.webapp.storage.ArrayStorage implementation
- * (just run, no need to understand)
- */
 public class MainArray {
     private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
@@ -47,6 +43,12 @@ public class MainArray {
                     break;
                 case "get":
                     System.out.println(ARRAY_STORAGE.get(uuid));
+                    break;
+                case "update":
+                    r = new Resume();
+                    r.setUuid(uuid);
+                    ARRAY_STORAGE.update(r);
+                    printAll();
                     break;
                 case "clear":
                     ARRAY_STORAGE.clear();
