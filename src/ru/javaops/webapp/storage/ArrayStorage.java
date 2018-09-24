@@ -5,7 +5,7 @@ import ru.javaops.webapp.model.Resume;
 import java.util.Arrays;
 
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private Resume[] storage = new Resume[10_000];
     private int size = 0;
 
     public void clear() {
@@ -23,7 +23,7 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (getIndex(resume.getUuid()) == -1) {
+        if (getIndex(resume.getUuid()) != -1) {
             System.out.println("Резюме " + resume.getUuid() + " уже есть в базе!");
         } else if (size >= storage.length) {
             System.out.println("База переполнена!");
@@ -37,10 +37,10 @@ public class ArrayStorage {
         int index = getIndex(uuid);
         if (index == -1) {
             System.out.println("Резюме " + uuid + " не найдено!");
+            return null;
         } else {
             return storage[index];
         }
-        return null;
     }
 
     public void delete(String uuid) {
