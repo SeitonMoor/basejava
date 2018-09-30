@@ -2,9 +2,10 @@ package ru.javaops.webapp;
 
 import ru.javaops.webapp.model.Resume;
 import ru.javaops.webapp.storage.ArrayStorage;
+import ru.javaops.webapp.storage.Storage;
 
 public class MainTestArrayStorage {
-    private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    private final static Storage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
         final Resume r1 = new Resume();
