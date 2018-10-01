@@ -8,28 +8,16 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     public static final Resume KEY = new Resume();
 
     @Override
-    public void clear() {
-
+    protected void doSave(Resume resume, int index) {
+        if (storage[index].compareTo(resume) > 0) {
+            System.arraycopy(storage, index, storage, index + 1, size + 1 - index);
+            storage[index] = resume;
+        }
     }
 
     @Override
-    public void update(Resume resume) {
+    protected void doDelete(int index) {
 
-    }
-
-    @Override
-    public void save(Resume resume) {
-
-    }
-
-    @Override
-    public void delete(String uuid) {
-
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return new Resume[0];
     }
 
     @Override

@@ -6,44 +6,14 @@ import java.util.Arrays;
 
 public class ArrayStorage extends AbstractArrayStorage {
 
-    public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
+    @Override
+    protected void doSave(Resume resume, int index) {
+        storage[size] = resume;
     }
 
-    public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index == -1) {
-            System.out.println("Резюме " + resume.getUuid() + " не найдено!");
-        } else {
-            storage[index] = resume;
-        }
-    }
-
-    public void save(Resume resume) {
-        if (getIndex(resume.getUuid()) != -1) {
-            System.out.println("Резюме " + resume.getUuid() + " уже есть в базе!");
-        } else if (size >= STORAGE_LIMIT) {
-            System.out.println("База переполнена!");
-        } else {
-            storage[size] = resume;
-            size++;
-        }
-    }
-
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index == -1) {
-            System.out.println("Резюме " + uuid + " не найдено!");
-        } else {
-            storage[index] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
-        }
-    }
-
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
+    @Override
+    protected void doDelete(int index) {
+        storage[index] = storage[size - 1];
     }
 
     protected int getIndex(String uuid) {
@@ -54,4 +24,5 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
         return -1;
     }
+
 }
