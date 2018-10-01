@@ -5,19 +5,20 @@ import ru.javaops.webapp.model.Resume;
 import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
-    public static final Resume KEY = new Resume();
 
     @Override
     protected void doSave(Resume resume, int index) {
-        if (storage[index].compareTo(resume) > 0) {
-            System.arraycopy(storage, index, storage, index + 1, size + 1 - index);
-            storage[index] = resume;
-        }
+        int doIndex = index * (-1) - 1;
+        System.arraycopy(storage, index, storage, doIndex + 1, size - doIndex);
+        storage[doIndex] = resume;
     }
 
     @Override
     protected void doDelete(int index) {
-
+        int doIndex = size - index - 1;
+        if (doIndex > 0) {
+            System.arraycopy(storage, index + 1, storage, index, doIndex);
+        }
     }
 
     @Override
