@@ -7,11 +7,10 @@ import ru.javaops.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10_000;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int size = 0;
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
@@ -24,18 +23,6 @@ public abstract class AbstractArrayStorage implements Storage {
             throw new NotExistStorageException(resume.getUuid());
         } else {
             storage[index] = resume;
-        }
-    }
-
-    public void save(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index != -1) {
-            throw new ExistStorageException(resume.getUuid());
-        } else if (size >= STORAGE_LIMIT) {
-            throw new StorageException("База переполнена!", resume.getUuid());
-        } else {
-            insertElement(resume, index);
-            size++;
         }
     }
 
@@ -58,6 +45,13 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
+    @Override
+    public void storageExceptionCheck(Resume resume) {
+        if (size >= STORAGE_LIMIT) {
+            throw new StorageException("База переполнена!", resume.getUuid());
+        }
+    }
+
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
     }
@@ -65,10 +59,4 @@ public abstract class AbstractArrayStorage implements Storage {
     public int size() {
         return size;
     }
-
-    protected abstract int getIndex(String uuid);
-
-    protected abstract void insertElement(Resume resume, int index);
-
-    protected abstract void fillDeletedElement(int index);
 }
