@@ -13,10 +13,24 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected abstract void fillDeletedElement(int index);
 
+    protected abstract void insertElement(int index, Resume resume);
+
+    @Override
+    public int size() {
+        return size;
+    }
+
     @Override
     protected void fillDeletedElement(int index, String uuid) {
         fillDeletedElement(index);
         storage[size + 1] = null;
+        size--;
+    }
+
+    @Override
+    protected void insertObject(int index, Resume resume) {
+        insertElement(index, resume);
+        size++;
     }
 
     @Override

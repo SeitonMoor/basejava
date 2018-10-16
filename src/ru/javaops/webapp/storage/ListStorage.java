@@ -1,7 +1,5 @@
 package ru.javaops.webapp.storage;
 
-import ru.javaops.webapp.exception.ExistStorageException;
-import ru.javaops.webapp.exception.NotExistStorageException;
 import ru.javaops.webapp.model.Resume;
 
 import java.util.ArrayList;
@@ -11,17 +9,27 @@ public class ListStorage extends AbstractStorage {
     private List<Resume> list = new ArrayList<>();
 
     @Override
-    protected void storageLimitCheck(Resume resume) {
-
+    public int size() {
+        return list.size();
     }
 
     @Override
-    protected int getIndex(String uuid, Resume resume) {
+    protected int prepareInsert(Resume resume) {
         return list.indexOf(resume);
     }
 
     @Override
-    protected void insertElement(int index, Resume resume) {
+    protected int prepareInsert(String uuid) {
+        return list.indexOf(uuid);
+    }
+
+    @Override
+    protected int getIndex(String uuid) {
+        return 0;
+    }
+
+    @Override
+    protected void insertObject(int index, Resume resume) {
         list.add(resume);
     }
 
@@ -48,5 +56,10 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected Resume doGet(int index, String uuid) {
         return list.get(index);
+    }
+
+    @Override
+    protected void storageLimitCheck(Resume resume) {
+
     }
 }

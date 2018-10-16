@@ -9,17 +9,22 @@ public class MapStorage extends AbstractStorage {
     private Map<String, Resume> map = new HashMap<>();
 
     @Override
+    public int size() {
+        return map.size();
+    }
+
+    @Override
     protected void storageLimitCheck(Resume resume) {
 
     }
 
     @Override
-    protected int getIndex(String uuid, Resume resume) {
+    protected int getIndex(String uuid) {
         return 0;
     }
 
     @Override
-    protected void insertElement(int index, Resume resume) {
+    protected void insertObject(int index, Resume resume) {
         map.put(resume.getUuid(), resume);
     }
 

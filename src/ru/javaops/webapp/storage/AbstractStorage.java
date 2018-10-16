@@ -9,16 +9,16 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void save(Resume resume) {
-        int index = getIndex(resume.getUuid(), resume);
+        int index = prepareInsert(resume);
         storageExistCheck(resume, index);
         storageLimitCheck(resume);
-        insertElement(index, resume);
+        insertObject(index, resume);
         size++;
     }
 
     @Override
     public void delete(String uuid) {
-        int index = getIndex(uuid, new Resume());
+        int index = prepareInsert(uuid);
         storageNotExistCheck(uuid, index);
         fillDeletedElement(index, uuid);
         size--;
@@ -26,14 +26,14 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        int index = getIndex(resume.getUuid(), resume);
+        int index = prepareInsert(resume);
         storageNotExistCheck(resume.getUuid(), index);
         doUpdate(index, resume);
     }
 
     @Override
     public Resume get(String uuid) {
-        int index = getIndex(uuid, new Resume());
+        int index = prepareInsert(uuid);
         storageNotExistCheck(uuid, index);
         return doGet(index, uuid);
     }
@@ -54,6 +54,14 @@ public abstract class AbstractStorage implements Storage {
         }
     }
 
+    protected int prepareInsert(Resume resume) {
+        return getIndex(resume.getUuid());
+    }
+
+    protected int prepareInsert(String uuid) {
+        return getIndex(uuid);
+    }
+
     public abstract void clear();
 
     protected abstract void doUpdate(int index, Resume resume);
@@ -62,9 +70,9 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void storageLimitCheck(Resume resume);
 
-    protected abstract int getIndex(String uuid, Resume resume);
+    protected abstract int getIndex(String uuid);
 
-    protected abstract void insertElement(int index, Resume resume);
+    protected abstract void insertObject(int index, Resume resume);
 
     protected abstract void fillDeletedElement(int index, String uuid);
 }
