@@ -9,52 +9,42 @@ public class MapStorage extends AbstractStorage {
     private Map<String, Resume> map = new HashMap<>();
 
     @Override
+    protected void storageLimitCheck(Resume resume) {
+
+    }
+
+    @Override
+    protected int getIndex(String uuid, Resume resume) {
+        return 0;
+    }
+
+    @Override
+    protected void insertElement(int index, Resume resume) {
+        map.put(resume.getUuid(), resume);
+    }
+
+    @Override
+    protected void fillDeletedElement(int index, String uuid) {
+        map.remove(uuid);
+    }
+
+    @Override
     public void clear() {
         map.clear();
     }
 
     @Override
-    public void update(Resume resume) {
-
+    protected void doUpdate(int index, Resume resume) {
+        map.replace(resume.getUuid(), resume);
     }
 
     @Override
-    public void save(Resume resume) {
-
-    }
-
-    @Override
-    public Resume get(String uuid) {
-        return null;
-    }
-
-    @Override
-    public void delete(String uuid) {
-
-    }
-
-    @Override
-    protected int getIndex(String uuid) {
-        return 0;
-    }
-
-    @Override
-    protected void insertElement(Resume resume, int index) {
-
-    }
-
-    @Override
-    protected void fillDeletedElement(int index) {
-
+    protected Resume doGet(int index, String uuid) {
+        return map.get(uuid);
     }
 
     @Override
     public Resume[] getAll() {
         return new Resume[0];
-    }
-
-    @Override
-    public int size() {
-        return 0;
     }
 }

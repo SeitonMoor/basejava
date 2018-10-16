@@ -1,5 +1,6 @@
 package ru.javaops.webapp.storage;
 
+import ru.javaops.webapp.exception.ExistStorageException;
 import ru.javaops.webapp.exception.NotExistStorageException;
 import ru.javaops.webapp.model.Resume;
 
@@ -10,57 +11,42 @@ public class ListStorage extends AbstractStorage {
     private List<Resume> list = new ArrayList<>();
 
     @Override
+    protected void storageLimitCheck(Resume resume) {
+
+    }
+
+    @Override
+    protected int getIndex(String uuid, Resume resume) {
+        return list.indexOf(resume);
+    }
+
+    @Override
+    protected void insertElement(int index, Resume resume) {
+        list.add(resume);
+    }
+
+    @Override
+    protected void fillDeletedElement(int index, String uuid) {
+        list.remove(index);
+    }
+
+    @Override
     public void clear() {
         list.clear();
     }
 
     @Override
-    public void update(Resume resume) {
-
-    }
-
-    @Override
-    public void save(Resume resume) {
-        list.add(resume);
-    }
-
-    @Override
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public void delete(String uuid) {
-
-    }
-
-    @Override
-    protected int getIndex(String uuid) {
-        return 0;
-    }
-
-    @Override
-    protected void insertElement(Resume resume, int index) {
-
-    }
-
-    @Override
-    protected void fillDeletedElement(int index) {
-
-    }
-
-    @Override
     public Resume[] getAll() {
-        return new Resume[0];
+        return list.toArray(new Resume[list.size()]);
     }
 
     @Override
-    public int size() {
-        return 0;
+    protected void doUpdate(int index, Resume resume) {
+        list.set(index, resume);
+    }
+
+    @Override
+    protected Resume doGet(int index, String uuid) {
+        return list.get(index);
     }
 }

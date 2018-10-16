@@ -1,7 +1,5 @@
 package ru.javaops.webapp.storage;
 
-import ru.javaops.webapp.exception.ExistStorageException;
-import ru.javaops.webapp.exception.NotExistStorageException;
 import ru.javaops.webapp.exception.StorageException;
 import ru.javaops.webapp.model.Resume;
 
@@ -9,54 +7,43 @@ import java.util.Arrays;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10_000;
+    protected int size = 0;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
 
+    protected abstract void fillDeletedElement(int index);
+
+    @Override
+    protected void fillDeletedElement(int index, String uuid) {
+        fillDeletedElement(index);
+        storage[size + 1] = null;
+    }
+
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index == -1) {
-            throw new NotExistStorageException(resume.getUuid());
-        } else {
-            storage[index] = resume;
-        }
-    }
-
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index == -1) {
-            throw new NotExistStorageException(uuid);
-        }
-        return storage[index];
-    }
-
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index == -1) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            fillDeletedElement(index);
-            storage[size - 1] = null;
-            size--;
-        }
+    @Override
+    public void doUpdate(int index, Resume resume) {
+        storage[index] = resume;
     }
 
     @Override
-    public void storageExceptionCheck(Resume resume) {
+    public Resume doGet(int index, String uuid) {
+        return storage[index];
+    }
+
+    @Override
+    public void storageLimitCheck(Resume resume) {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("База переполнена!", resume.getUuid());
         }
     }
 
+    @Override
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
-    }
-
-    public int size() {
-        return size;
     }
 }
